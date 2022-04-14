@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import React from "react";
+import { Routes, Route } from 'react-router-dom';
+import Home from './screens/Home'
+import Room from './screens/Room'
 
 const App = () => {
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(`http://localhost:5000`);
-    setSocket(newSocket);
-    newSocket.on("connect", () => {
-      console.log("Connected");
-    });
-  }, [setSocket]);
 
   return (
     <div className="App">
-      <header className="App-header">Learn React</header>
+      <Routes>
+        <Route path="/room/:id" element={<Room />} />
+        <Route exact path="/" element={<Home />} />
+        {/* <Route path="contact" element={<Contact />} /> */}
+      </Routes>
     </div>
   );
 };
