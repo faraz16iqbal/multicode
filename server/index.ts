@@ -3,9 +3,8 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 
-// TODO:
-// add sockets
-// Start making rooms
+import { addUser, usersInRoom } from './helpers/Users'
+import { AddUserObject } from './utils'
 
 const PORT: Number = 5000;
 const app: express.Application = express()
@@ -19,7 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
 // Socket Logic
 const io = new Server(server, {
     cors: {
@@ -29,22 +27,35 @@ const io = new Server(server, {
     allowEIO3: true,
 });
 
-let arr: Array<String> = [];
-
 io.on('connection', (socket) => {
-    console.log("User Connected " + socket.id)
-    socket.on('joinRoom', (roomId) => {
-        console.log(roomId);
-        socket.join(roomId);
-        return socket.broadcast.to(roomId).emit('userjoined');
-    });
-    socket.on("setBody", (roomId, msg) => {
-        console.log(msg)
-        console.log(roomId)
-        io.to(roomId).emit("message", msg);
-    })
-});
 
+    socket.on("join", ({ name, room }, callback) => {
+        console.log("User has joined");
+
+        const res: AddUserObject = addUser({ id: socket.id, name, room });
+
+
+        if (res.error) {
+            return callback(res.error);
+        } else if (res.user) {
+            socket.join(res.user.room);
+            console.log("user id", socket.id);
+
+            // For notifications
+            socket.broadcast.to(res.user.room).emit("notification", {
+                text: `${res.user.name} has joined!`,
+                type: "connect",
+            });
+
+            io.to(res.user.room).emit("roomData", {
+                room: res.user.room,
+                users: usersInRoom(res.user.room),
+            });
+            callback();
+        }
+    });
+
+});
 
 server.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
