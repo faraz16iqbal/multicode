@@ -1,19 +1,21 @@
 import React from "react";
-import { Routes, Route } from 'react-router-dom';
-import Home from './screens/Home'
-import Room from './screens/Room'
+import { Routes, Route } from "react-router-dom";
+import { ReactNotifications } from "react-notifications-component";
+import 'react-notifications-component/dist/theme.css'
 
-const App = () => {
+import Login from "./screens/Login/Login";
+// import Editor from "./screens/Editor/Editor";
 
+function App() {
   return (
-    <div className="App">
+    <>
+      <ReactNotifications />
       <Routes>
-        <Route path="/room/:id" element={<Room />} />
-        <Route exact path="/" element={<Home />} />
-        {/* <Route path="contact" element={<Contact />} /> */}
+        <Route path="/" element={<Login />} exact />
+        {/* <Route path="/:id" element={<Editor />} exact /> */}
       </Routes>
-    </div>
+    </>
   );
-};
+}
 
 export default App;
