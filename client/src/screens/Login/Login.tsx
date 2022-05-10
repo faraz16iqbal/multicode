@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import "./Login.scss";
 
 import Header from "../../components/Header/Header"
-import lottieJson from '../../../public/lottie.json';
+import lottieJson from '../../media/lottie.json';
 
 
 const Login: React.FC = () => {
@@ -24,13 +24,6 @@ const Login: React.FC = () => {
       <main>
         <div className="animation">
           <Lottie animationData={lottieJson} loop play speed={2} />
-          {/* <lottie-player
-            src="https://assets8.lottiefiles.com/private_files/lf30_vAtD7F.json"
-            background="transparent"
-            speed="2"
-            loop
-            autoplay
-          ></lottie-player> */}
         </div>
         <div className="btn-container">
           <form onSubmit={handleSubmit}>

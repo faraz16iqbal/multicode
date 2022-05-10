@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import queryString from "query-string";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import { FiShare2 } from "react-icons/fi";
-import queryString from "query-string";
 import { Store } from 'react-notifications-component';
 import { useLocation } from "react-router-dom";
 
@@ -36,15 +36,21 @@ import ControlDropdown from "../../components/ControlDropdown/ControlDropdown";
 
 // get scoket
 import socket from '../../utils/socket';
+import { UserInterface } from "../../interfaces";
 
+type Config = {
+    mode: { name: String },
+    theme: String,
+    lineNumbers: Boolean
+};
 
 const Editor: React.FC = () => {
     const params = useLocation();
-    const [name, setName] = useState("");
-    const [room, setRoom] = useState("");
-    const [users, setUsers] = useState("");
-    const [text, setText] = useState("<h1>Welcome to CodeRigade</h1>");
-    const [config, setConfig] = useState({
+    const [name, setName] = useState<String>("");
+    const [room, setRoom] = useState<String>("");
+    const [users, setUsers] = useState<Array<UserInterface>>([]);
+    const [text, setText] = useState<string>("<h1>Welcome to CodeRigade</h1>");
+    const [config, setConfig] = useState<Config>({
         mode: { name: "xml" },
         theme: "material",
         lineNumbers: true,
@@ -53,20 +59,19 @@ const Editor: React.FC = () => {
     const ENDPOINT = "http://localhost:5000";
 
     useEffect(() => {
-        const { room } = queryString.parse(params.search)
-        console.log(socket)
 
-        let name;
+        const { room }: any = queryString.parse(params.search)
+
+
+        let name: String | null = null;
         while (!name) {
-            // While name is undefined
             name = prompt("Hi, What is your name?");
         }
 
         setName(name);
         setRoom(room);
 
-        // Initial connection to the room
-        socket.emit("join", { name, room }, (error) => {
+        socket.emit("join", { name, room }, (error: any) => {
             if (error) {
                 alert(error);
             }
@@ -117,12 +122,12 @@ const Editor: React.FC = () => {
             }
         });
 
-        socket.on("changeMode", (mode) => {
-            setConfig({ mode: mode });
+        socket.on("changeMode", (name: String) => {
+            setConfig(prevState => ({ ...prevState, mode: { name } }));
         });
 
-        socket.on("changeTheme", (theme) => {
-            setConfig({ theme: theme });
+        socket.on("changeTheme", (theme, prevState) => {
+            setConfig(prevState => ({ ...prevState, theme: theme }));
         });
 
         socket.on("roomData", ({ users }) => {
@@ -131,17 +136,18 @@ const Editor: React.FC = () => {
         });
     }, []);
 
-    const handleChange = (value) => {
+    const handleChange = (value: String) => {
         socket.emit("sendText", value);
     };
 
-    const handleMode = (e) => {
-        setConfig({ mode: e.target.value });
+    const handleMode = (e: { target: HTMLInputElement }) => {
+        // const newValue: String = (<e.target as HTMLInputElement).value;
+        setConfig(prevState => ({ ...prevState, mode: { name: e.target.value } }));
         socket.emit("sendModeValue", e.target.value);
     };
 
-    const handleTheme = (e) => {
-        setConfig({ theme: e.target.value });
+    const handleTheme = (e: { target: HTMLInputElement }) => {
+        setConfig(prevState => ({ ...prevState, theme: e.target.value }));
         socket.emit("sendThemeValue", e.target.value);
     };
 
