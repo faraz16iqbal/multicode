@@ -1,30 +1,36 @@
 import React from "react";
-import "./Login.scss";
-import Header from "../../components/Header/Header"
+import Lottie from 'react-lottie-player'
 import { useNavigate } from 'react-router-dom';
+import "./Login.scss";
 
-const Login = () => {
+import Header from "../../components/Header/Header"
+import lottieJson from '../../../public/lottie.json';
 
-  let navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+const Login: React.FC = () => {
+
+  let navigate: any = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const room = new Date().getTime(); // Generating random room code
     navigate(`/codebox?room=${room}`);
   };
+
 
   return (
     <div className="login-container">
       <Header />
       <main>
         <div className="animation">
-          <lottie-player
+          <Lottie animationData={lottieJson} loop play speed={2} />
+          {/* <lottie-player
             src="https://assets8.lottiefiles.com/private_files/lf30_vAtD7F.json"
             background="transparent"
             speed="2"
             loop
             autoplay
-          ></lottie-player>
+          ></lottie-player> */}
         </div>
         <div className="btn-container">
           <form onSubmit={handleSubmit}>

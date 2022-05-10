@@ -2,8 +2,13 @@ import React from "react";
 import "./UsersList.scss";
 
 import User from "../User/User";
+import { UserInterface } from "../../interfaces";
 
-export default function UsersList({ users }) {
+type props = {
+  users: Array<UserInterface>
+}
+
+const UsersList: React.FC<props> = ({ users }) => {
   return (
     <div className="users">
       {users &&
@@ -13,3 +18,4 @@ export default function UsersList({ users }) {
     </div>
   );
 }
+export default UsersList;
