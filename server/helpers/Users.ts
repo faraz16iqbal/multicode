@@ -22,7 +22,7 @@ const removeUser = (id: String) => {
     }
 };
 
-const findUser = (id: String) => users.find((user) => user.id === id);
+const findUser = (id: String): User | undefined => users.find((user) => user.id === id);
 
 const usersInRoom = (room: String) => users.filter((user) => user.room === room);
 

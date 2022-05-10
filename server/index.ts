@@ -3,8 +3,8 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 
-import { addUser, usersInRoom } from './helpers/Users'
-import { AddUserObject } from './utils'
+import { addUser, usersInRoom, removeUser, findUser } from './helpers/Users'
+import { AddUserObject, User } from './utils'
 
 const PORT: Number = 5000;
 const app: express.Application = express()
@@ -53,6 +53,43 @@ io.on('connection', (socket) => {
             });
             callback();
         }
+
+        socket.on("sendText", (text) => {
+            const user: User | undefined = findUser(socket.id);
+            if (user)
+                socket.broadcast.to(user.room).emit("text", text);
+        });
+
+        socket.on("sendModeValue", (mode) => {
+            const user: User | undefined = findUser(socket.id);
+            if (user)
+                socket.broadcast.to(user.room).emit("changeMode", mode);
+        });
+
+        socket.on("sendThemeValue", (theme) => {
+            const user: User | undefined = findUser(socket.id);
+            if (user) {
+                console.log("user room code", user.room);
+                socket.broadcast.to(user.room).emit("changeTheme", theme);
+            }
+        });
+
+        socket.on("disconnect", () => {
+            console.log("User has disconnected");
+            const user: User | undefined = removeUser(socket.id);
+            if (user) {
+                io.to(user.room).emit("notification", {
+                    text: `${user.name} has left`,
+                    type: "disconnect",
+                });
+
+                io.to(user.room).emit("roomData", {
+                    room: user.room,
+                    users: usersInRoom(user.room),
+                });
+            }
+        });
+
     });
 
 });
