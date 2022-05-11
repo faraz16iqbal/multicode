@@ -1,6 +1,8 @@
 import React from "react";
 import Lottie from 'react-lottie-player'
 import { useNavigate } from 'react-router-dom';
+import { v1 as uuidv1 } from 'uuid';
+
 import "./Login.scss";
 
 import Header from "../../components/Header/Header"
@@ -13,7 +15,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const room = new Date().getTime(); // Generating random room code
+    const room = uuidv1() + new Date().getTime();
     navigate(`/codebox?room=${room}`);
   };
 
