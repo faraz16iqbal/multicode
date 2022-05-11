@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal, FormControl, InputGroup } from 'react-bootstrap'
 
 
-const Backdrop: React.FC<any> = ({ handleNameSubmit }) => {
+const Backdrop: React.FC<any> = ({ handleNameSubmit, handleNameChange }) => {
     const [show, setShow] = useState<boolean>(true);
 
     return (
@@ -21,11 +21,12 @@ const Backdrop: React.FC<any> = ({ handleNameSubmit }) => {
                             placeholder="Recipient's username"
                             aria-label="Recipient's username"
                             aria-describedby="basic-addon2"
+                            onChange={(e) => handleNameChange(e)}
                         />
                     </InputGroup>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleNameSubmit}>Let's Go</Button>
+                    <Button variant="primary" onClick={(e) => handleNameSubmit(e)}>Let's Go</Button>
                 </Modal.Footer>
             </Modal>
         </>

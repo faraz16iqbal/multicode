@@ -9,9 +9,8 @@ type props = {
 const User: React.FC<props> = ({ user }) => {
   return (
     <div className="user" key={user.id} >
-      <span></span> & nbsp;&nbsp;
-      {user.name
-      }
+      <span></span> &nbsp;&nbsp;
+      {user.name.toLocaleUpperCase()}
     </div >
   );
 }

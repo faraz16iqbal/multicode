@@ -120,21 +120,23 @@ const Editor: React.FC = () => {
 
         socket.on("roomData", ({ users }) => {
             setUsers(users);
-            console.log(users);
         });
     }, []);
 
     const handleNameSubmit = (e: any) => {
         e.preventDefault();
-        setFormName(e.target.value);
         if (formName) {
             setName(formName);
-            socket.emit("join", { name, room }, (error: any) => {
+            socket.emit("join", { name: formName, room }, (error: any) => {
                 if (error) {
                     alert(error);
                 }
             });
         }
+
+    }
+    const handleNameChange = (e: any) => {
+        setFormName(e.target.value);
 
     }
     const handleChange = (value: String) => {
@@ -175,7 +177,7 @@ const Editor: React.FC = () => {
 
     return (
 
-        { name } ? <Backdrop handleNameSubmit /> :
+        !{ name }.name.length ? <Backdrop handleNameSubmit={handleNameSubmit} handleNameChange={handleNameChange} /> :
             <div className="codebox-container">
                 <Header />
                 <UsersList users={users} />
