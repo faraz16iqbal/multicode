@@ -22,8 +22,8 @@ const Backdrop: React.FC<props> = ({ handleNameSubmit, handleNameChange, show })
                 <Modal.Body>
                     <InputGroup className="mb-3">
                         <FormControl
-                            placeholder="Recipient's username"
-                            aria-label="Recipient's username"
+                            placeholder="Your name"
+                            aria-label="Your name"
                             aria-describedby="basic-addon2"
                             onChange={(e) => handleNameChange(e)}
                         />
