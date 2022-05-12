@@ -17,11 +17,12 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+require('dotenv').config();
 
 // Socket Logic
 const io = new Server(server, {
     cors: {
-        origin: ['http://localhost:3000'],
+        origin: [`${process.env.CLIENT}`],
         credentials: true,
     },
     allowEIO3: true,
