@@ -1,0 +1,1 @@
+export const ENDPOINT: string = "https://multicode-phi.vercel.app/";

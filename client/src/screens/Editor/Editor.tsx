@@ -34,11 +34,12 @@ import "codemirror/mode/vue/vue";
 // Overrides some codemirror classes, don't change order
 import "./Editor.scss";
 import ControlDropdown from "../../components/ControlDropdown/ControlDropdown";
+import Backdrop from "../../components/Backdrop/Backdrop";
 
 import socket from '../../utils/socket';
 import { UserInterface, ConfigInterface } from "../../interfaces";
 import { modes, themes } from '../../utils/data'
-import Backdrop from "../../components/Backdrop/Backdrop";
+import { ENDPOINT } from "../../config";
 
 
 
@@ -57,7 +58,7 @@ const Editor: React.FC = () => {
         lineNumbers: true,
     });
 
-    const ENDPOINT = "https://git.heroku.com/multicode-server.git";
+    const AppEndpoint: string = ENDPOINT;
 
     useEffect(() => {
 
@@ -65,7 +66,7 @@ const Editor: React.FC = () => {
         setRoom(room);
 
 
-    }, [ENDPOINT, params.search]);
+    }, [AppEndpoint, params.search]);
 
     // Socket.io listeners
     useEffect(() => {
