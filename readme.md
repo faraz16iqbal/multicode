@@ -1,7 +1,6 @@
-![CodeRigade](design/feature-graphic.png "CodeRigade")
-![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app={multicode})
+![Vercel](https://multicode-phi.vercel.app/?app={multicode})
 
-Multicode : A simple realtime collaborative code editor.
+### Multicode : A simple realtime collaborative code editor.
 
 [View live version](https://multicode-phi.vercel.app/)
 
