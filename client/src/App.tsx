@@ -6,6 +6,7 @@ import 'react-notifications-component/dist/theme.css'
 import Login from "./screens/Login/Login";
 import Editor from "./screens/Editor/Editor";
 
+
 const App: React.FC = () => {
   return (
     <>
