@@ -1,4 +1,4 @@
-![Vercel](https://multicode-phi.vercel.app/?app={multicode})
+![Vercel](http://therealsujitk-vercel-badge.vercel.app/?app=multicode)
 
 ### Multicode : A simple realtime collaborative code editor.
 
