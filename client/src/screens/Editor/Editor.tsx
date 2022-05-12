@@ -44,11 +44,12 @@ import Backdrop from "../../components/Backdrop/Backdrop";
 
 const Editor: React.FC = () => {
     const params = useLocation();
-    const [name, setName] = useState<String>("");
-    const [formName, setFormName] = useState<String>("");
-    const [room, setRoom] = useState<String>("");
+    const [name, setName] = useState<string>("");
+    const [formName, setFormName] = useState<string>("");
+    const [room, setRoom] = useState<string>("");
     const [users, setUsers] = useState<Array<UserInterface>>([]);
     const [text, setText] = useState<string>("<h1>Welcome to MultiCode</h1>");
+    const [modal, setModal] = useState<boolean>(true);
 
     const [config, setConfig] = useState<ConfigInterface>({
         mode: { name: "xml" },
@@ -110,7 +111,7 @@ const Editor: React.FC = () => {
             }
         });
 
-        socket.on("changeMode", (name: String) => {
+        socket.on("changeMode", (name: string) => {
             setConfig(prevState => ({ ...prevState, mode: { name } }));
         });
 
@@ -130,8 +131,11 @@ const Editor: React.FC = () => {
             socket.emit("join", { name: formName, room }, (error: any) => {
                 if (error) {
                     alert(error);
+                } else {
+                    setModal(false);
                 }
             });
+
         }
 
     }
@@ -139,7 +143,7 @@ const Editor: React.FC = () => {
         setFormName(e.target.value);
 
     }
-    const handleChange = (value: String) => {
+    const handleChange = (value: string) => {
         socket.emit("sendText", value);
     };
 
@@ -176,8 +180,8 @@ const Editor: React.FC = () => {
 
 
     return (
-
-        !{ name }.name.length ? <Backdrop handleNameSubmit={handleNameSubmit} handleNameChange={handleNameChange} /> :
+        <>
+            <Backdrop handleNameSubmit={handleNameSubmit} handleNameChange={handleNameChange} show={modal} />
             <div className="codebox-container">
                 <Header />
                 <UsersList users={users} />
@@ -209,6 +213,7 @@ const Editor: React.FC = () => {
                     />
                 </main>
             </div>
+        </>
     );
 }
 

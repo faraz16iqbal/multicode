@@ -6,6 +6,6 @@ export interface User {
 
 export interface AddUserObject {
     user?: User,
-    error?: String
+    error?: string
 
 }

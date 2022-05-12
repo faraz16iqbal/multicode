@@ -15,15 +15,15 @@ const addUser = (body: User) => {
     }
 };
 
-const removeUser = (id: String) => {
+const removeUser = (id: string) => {
     const index: number = users.findIndex((user) => user.id === id);
     if (index !== -1) {
         return users.splice(index, 1)[0];
     }
 };
 
-const findUser = (id: String): User | undefined => users.find((user) => user.id === id);
+const findUser = (id: string): User | undefined => users.find((user) => user.id === id);
 
-const usersInRoom = (room: String) => users.filter((user) => user.room === room);
+const usersInRoom = (room: string) => users.filter((user) => user.room === room);
 
 export { addUser, removeUser, findUser, usersInRoom };

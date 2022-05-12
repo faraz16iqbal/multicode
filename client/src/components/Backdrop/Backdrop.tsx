@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Modal, FormControl, InputGroup } from 'react-bootstrap'
 
 
-const Backdrop: React.FC<any> = ({ handleNameSubmit, handleNameChange }) => {
-    const [show, setShow] = useState<boolean>(true);
+type props = {
+    handleNameSubmit: Function,
+    handleNameChange: Function,
+    show: boolean
+}
 
+const Backdrop: React.FC<props> = ({ handleNameSubmit, handleNameChange, show }) => {
     return (
         <>
             <Modal

@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 import { addUser, usersInRoom, removeUser, findUser } from './helpers/Users'
 import { AddUserObject, User } from './utils/interfaces'
 
-const PORT: Number = 5000;
+const PORT: number = 5000;
 const app: express.Application = express()
 app.set('port', PORT)
 

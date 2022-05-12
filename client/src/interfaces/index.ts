@@ -5,7 +5,7 @@ export interface UserInterface {
 }
 
 export interface ConfigInterface {
-    mode: { name: String },
-    theme: String,
+    mode: { name: string },
+    theme: string,
     lineNumbers: Boolean
 };
