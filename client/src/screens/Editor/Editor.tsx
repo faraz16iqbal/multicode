@@ -57,8 +57,7 @@ const Editor: React.FC = () => {
         lineNumbers: true,
     });
 
-    const ENDPOINT = "http://localhost:5000";
-    // const ENDPOINT = "https://git.heroku.com/multicode-server.git";
+    const ENDPOINT = "https://git.heroku.com/multicode-server.git";
 
     useEffect(() => {
 
