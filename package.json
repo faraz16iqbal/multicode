@@ -6,7 +6,8 @@
   "scripts": {
     "server": "nodemon server/index.ts",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server/index.ts"
   },
   "author": "Faraz Iqbal",
   "license": "ISC",
