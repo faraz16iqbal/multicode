@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "tsc",
+    "start": "node dist/index.js",
     "server": "nodemon server/index.ts",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "node server/index.ts"
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "author": "Faraz Iqbal",
   "license": "ISC",
@@ -24,7 +26,5 @@
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "socket.io": "^4.5.0"
-  },
-  "target": "esnext",
-  "module": "commonjs"
+  }
 }
