@@ -12,5 +12,5 @@
     "forceConsistentCasingInFileNames": true
   },
   "compileOnSave": true,
-  "include": ["server", "client"]
+  "include": ["server"]
 }

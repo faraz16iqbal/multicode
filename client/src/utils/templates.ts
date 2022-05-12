@@ -1,0 +1,1 @@
+export const CPPTemplate: string = "#include<bits/stdc++.h>\nint main()\n{\n 	using namespace std;\nreturn 0 \n}\n"

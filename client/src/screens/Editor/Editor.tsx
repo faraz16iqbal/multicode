@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import queryString from "query-string";
@@ -34,23 +35,23 @@ import "codemirror/mode/vue/vue";
 import "./Editor.scss";
 import ControlDropdown from "../../components/ControlDropdown/ControlDropdown";
 
-// get scoket
 import socket from '../../utils/socket';
-import { UserInterface } from "../../interfaces";
+import { UserInterface, ConfigInterface } from "../../interfaces";
+import { modes, themes } from '../../utils/data'
+import Backdrop from "../../components/Backdrop/Backdrop";
 
-type Config = {
-    mode: { name: String },
-    theme: String,
-    lineNumbers: Boolean
-};
+
 
 const Editor: React.FC = () => {
     const params = useLocation();
-    const [name, setName] = useState<String>("");
-    const [room, setRoom] = useState<String>("");
+    const [name, setName] = useState<string>("");
+    const [formName, setFormName] = useState<string>("");
+    const [room, setRoom] = useState<string>("");
     const [users, setUsers] = useState<Array<UserInterface>>([]);
-    const [text, setText] = useState<string>("<h1>Welcome to CodeRigade</h1>");
-    const [config, setConfig] = useState<Config>({
+    const [text, setText] = useState<string>("<h1>Welcome to MultiCode</h1>");
+    const [modal, setModal] = useState<boolean>(true);
+
+    const [config, setConfig] = useState<ConfigInterface>({
         mode: { name: "xml" },
         theme: "material",
         lineNumbers: true,
@@ -61,21 +62,9 @@ const Editor: React.FC = () => {
     useEffect(() => {
 
         const { room }: any = queryString.parse(params.search)
-
-
-        let name: String | null = null;
-        while (!name) {
-            name = prompt("Hi, What is your name?");
-        }
-
-        setName(name);
         setRoom(room);
 
-        socket.emit("join", { name, room }, (error: any) => {
-            if (error) {
-                alert(error);
-            }
-        });
+
     }, [ENDPOINT, params.search]);
 
     // Socket.io listeners
@@ -122,7 +111,7 @@ const Editor: React.FC = () => {
             }
         });
 
-        socket.on("changeMode", (name: String) => {
+        socket.on("changeMode", (name: string) => {
             setConfig(prevState => ({ ...prevState, mode: { name } }));
         });
 
@@ -132,16 +121,33 @@ const Editor: React.FC = () => {
 
         socket.on("roomData", ({ users }) => {
             setUsers(users);
-            console.log(users);
         });
     }, []);
 
-    const handleChange = (value: String) => {
+    const handleNameSubmit = (e: any) => {
+        e.preventDefault();
+        if (formName) {
+            setName(formName);
+            socket.emit("join", { name: formName, room }, (error: any) => {
+                if (error) {
+                    alert(error);
+                } else {
+                    setModal(false);
+                }
+            });
+
+        }
+
+    }
+    const handleNameChange = (e: any) => {
+        setFormName(e.target.value);
+
+    }
+    const handleChange = (value: string) => {
         socket.emit("sendText", value);
     };
 
     const handleMode = (e: { target: HTMLInputElement }) => {
-        // const newValue: String = (<e.target as HTMLInputElement).value;
         setConfig(prevState => ({ ...prevState, mode: { name: e.target.value } }));
         socket.emit("sendModeValue", e.target.value);
     };
@@ -171,56 +177,43 @@ const Editor: React.FC = () => {
         });
     };
 
-    const modes = [
-        { name: "XML/HTML", code: "xml" },
-        { name: "CSS", code: "css" },
-        { name: "Javascript", code: "javascript" },
-        { name: "C/C++/C#", code: "clike" },
-        { name: "Python", code: "python" },
-        { name: "PHP", code: "php" },
-        { name: "Vue", code: "vue" },
-    ];
 
-    const themes = [
-        { name: "Material", code: "material" },
-        { name: "Monokai", code: "monokai" },
-        { name: "Nord", code: "nord" },
-        { name: "Ambiance", code: "ambiance" },
-        { name: "Eclipse", code: "eclipse" },
-    ];
 
     return (
-        <div className="codebox-container">
-            <Header />
-            <UsersList users={users} />
-            <main>
-                <div className="controls">
-                    <ControlDropdown
-                        default={config.mode}
-                        options={modes}
-                        handleDropdown={handleMode}
-                    />
-                    <div onClick={handleShare} className="control-icon">
-                        <span>Share&nbsp;&nbsp;</span>
-                        <FiShare2 size={15} />
+        <>
+            <Backdrop handleNameSubmit={handleNameSubmit} handleNameChange={handleNameChange} show={modal} />
+            <div className="codebox-container">
+                <Header />
+                <UsersList users={users} />
+                <main>
+                    <div className="controls">
+                        <ControlDropdown
+                            default={config.mode}
+                            options={modes}
+                            handleDropdown={handleMode}
+                        />
+                        <div onClick={handleShare} className="control-icon">
+                            <span>Share&nbsp;&nbsp;</span>
+                            <FiShare2 size={15} />
+                        </div>
+                        <ControlDropdown
+                            default={config.mode}
+                            options={themes}
+                            handleDropdown={handleTheme}
+                        />
                     </div>
-                    <ControlDropdown
-                        default={config.mode}
-                        options={themes}
-                        handleDropdown={handleTheme}
+                    <CodeMirror
+                        value={text}
+                        className="code-editor"
+                        options={config}
+                        onBeforeChange={(editor, data, value) => {
+                            setText(value);
+                            handleChange(value);
+                        }}
                     />
-                </div>
-                <CodeMirror
-                    value={text}
-                    className="code-editor"
-                    options={config}
-                    onBeforeChange={(editor, data, value) => {
-                        setText(value);
-                        handleChange(value);
-                    }}
-                />
-            </main>
-        </div>
+                </main>
+            </div>
+        </>
     );
 }
 

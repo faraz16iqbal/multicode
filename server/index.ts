@@ -4,9 +4,9 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 import { addUser, usersInRoom, removeUser, findUser } from './helpers/Users'
-import { AddUserObject, User } from './utils'
+import { AddUserObject, User } from './utils/interfaces'
 
-const PORT: Number = 5000;
+const PORT: number = 5000;
 const app: express.Application = express()
 app.set('port', PORT)
 
@@ -33,7 +33,6 @@ io.on('connection', (socket) => {
         console.log("User has joined");
 
         const res: AddUserObject = addUser({ id: socket.id, name, room });
-
 
         if (res.error) {
             return callback(res.error);
