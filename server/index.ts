@@ -1,5 +1,5 @@
 import cors from "cors";
-import express from 'express';
+import express, { Request, Response } from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 
@@ -23,7 +23,9 @@ require('dotenv').config();
 const io = new Server(server, {
     cors: {
         origin: [`${process.env.CLIENT}`],
+        methods: ["GET", "POST"],
         credentials: true,
+
     },
     allowEIO3: true,
 });
@@ -93,6 +95,10 @@ io.on('connection', (socket) => {
     });
 
 });
+
+app.get("/", (req: Request, res: Response) => {
+    res.send("<h2>Server for multicode application</h2>")
+})
 
 server.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
