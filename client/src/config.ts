@@ -1,1 +1,1 @@
-export const ENDPOINT: string = "https://multicode-phi.vercel.app/";
+export const ENDPOINT: string = "https://multicode-server.herokuapp.com/";
